@@ -156,7 +156,13 @@
                             return;
                         }
 
-                        // Guardar en Firestore y redirigir a WhatsApp
+                        // Generar y redirigir a WhatsApp inmediatamente
+                        const phoneNumber = '5491122659765';
+                        const message = encodeURIComponent(`Hola New Level, estoy interesado en la oferta de God of War Ragnarök PS4 y PS5 a $9.000 ARS. Mis datos son: Nombre: ${data.nombre}, WhatsApp: ${data.whatsapp}, Email: ${data.email}.`);
+                        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+                        window.location.href = whatsappUrl;
+
+                        // Guardar en Firestore de forma asíncrona
                         try {
                             const collectionPath = `/artifacts/${appId}/users/${userId}/registrations`;
                             await addDoc(collection(db, collectionPath), {
@@ -167,18 +173,9 @@
                                 precio: "$9.000 ARS",
                                 timestamp: serverTimestamp()
                             });
-                            
-                            showMessage('¡Registro exitoso! Redirigiendo a WhatsApp...', 'success');
-
-                            // Redirigir a WhatsApp
-                            const phoneNumber = '5491122659765';
-                            const message = encodeURIComponent(`Hola New Level, estoy interesado en la oferta de God of War Ragnarök PS4 y PS5 a $9.000 ARS. Mis datos son: Nombre: ${data.nombre}, WhatsApp: ${data.whatsapp}, Email: ${data.email}.`);
-                            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-                            window.location.href = whatsappUrl;
-
+                            console.log("Datos guardados en Firestore.");
                         } catch (error) {
                             console.error("Error al guardar en Firestore:", error);
-                            showMessage('Error al registrar. Inténtalo de nuevo.', 'error');
                         } finally {
                             submitButton.disabled = false;
                             submitButton.textContent = 'Comprar ahora por WhatsApp';

@@ -141,28 +141,27 @@
                     const registrationForm = document.getElementById('registration-form');
                     const submitButton = document.getElementById('submit-button');
                     
-                    registrationForm.addEventListener('submit', async (e) => {
-                        e.preventDefault();
-                        submitButton.disabled = true;
-                        submitButton.textContent = 'Procesando...';
-
+                    // Ahora usamos el evento de clic en el botón, no en el formulario.
+                    submitButton.addEventListener('click', async (e) => {
+                        e.preventDefault(); // Previene el envío del formulario si está dentro de uno
+                        
                         const formData = new FormData(registrationForm);
                         const data = Object.fromEntries(formData.entries());
 
                         if (!data.nombre || !data.whatsapp || !data.email) {
                             showMessage('Por favor, completa todos los campos.', 'error');
-                            submitButton.disabled = false;
-                            submitButton.textContent = 'Comprar ahora por WhatsApp';
                             return;
                         }
 
-                        // Generar y redirigir a WhatsApp inmediatamente
+                        // Generar el enlace de WhatsApp
                         const phoneNumber = '5491122659765';
                         const message = encodeURIComponent(`Hola New Level, estoy interesado en la oferta de God of War Ragnarök PS4 y PS5 a $9.000 ARS. Mis datos son: Nombre: ${data.nombre}, WhatsApp: ${data.whatsapp}, Email: ${data.email}.`);
                         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-                        window.location.href = whatsappUrl;
 
-                        // Guardar en Firestore de forma asíncrona
+                        // Abrir el enlace de WhatsApp en una nueva ventana/pestaña
+                        window.open(whatsappUrl, '_blank');
+
+                        // Ahora, guardar en Firestore de forma asíncrona y segura
                         try {
                             const collectionPath = `/artifacts/${appId}/users/${userId}/registrations`;
                             await addDoc(collection(db, collectionPath), {
@@ -176,9 +175,6 @@
                             console.log("Datos guardados en Firestore.");
                         } catch (error) {
                             console.error("Error al guardar en Firestore:", error);
-                        } finally {
-                            submitButton.disabled = false;
-                            submitButton.textContent = 'Comprar ahora por WhatsApp';
                         }
                     });
                 });
@@ -192,4 +188,6 @@
     </script>
 </body>
 </html>
+
+
 

@@ -141,13 +141,20 @@
                     const registrationForm = document.getElementById('registration-form');
                     const submitButton = document.getElementById('submit-button');
                     
-                    registrationForm.addEventListener('submit', async (e) => {
+                    submitButton.addEventListener('click', async (e) => {
                         e.preventDefault();
                         submitButton.disabled = true;
                         submitButton.textContent = 'Procesando...';
 
                         const formData = new FormData(registrationForm);
                         const data = Object.fromEntries(formData.entries());
+
+                        if (!data.nombre || !data.whatsapp || !data.email) {
+                            showMessage('Por favor, completa todos los campos.', 'error');
+                            submitButton.disabled = false;
+                            submitButton.textContent = 'Comprar ahora por WhatsApp';
+                            return;
+                        }
 
                         // Guardar en Firestore y redirigir a WhatsApp
                         try {
@@ -188,4 +195,5 @@
     </script>
 </body>
 </html>
+
 

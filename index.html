@@ -163,19 +163,11 @@
                             
                             showMessage('¡Registro exitoso! Redirigiendo a WhatsApp...', 'success');
 
-                            // Redirigir a WhatsApp usando un método más compatible con archivos locales
-                            setTimeout(() => {
-                                const phoneNumber = '5491122659765';
-                                const message = encodeURIComponent(`Hola New Level, estoy interesado en la oferta de God of War Ragnarök PS4 y PS5 a $9.000 ARS. Mis datos son: Nombre: ${data.nombre}, WhatsApp: ${data.whatsapp}, Email: ${data.email}.`);
-                                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-
-                                const link = document.createElement('a');
-                                link.href = whatsappUrl;
-                                link.target = '_blank';
-                                document.body.appendChild(link);
-                                link.click();
-                                document.body.removeChild(link);
-                            }, 500);
+                            // Redirigir a WhatsApp
+                            const phoneNumber = '5491122659765';
+                            const message = encodeURIComponent(`Hola New Level, estoy interesado en la oferta de God of War Ragnarök PS4 y PS5 a $9.000 ARS. Mis datos son: Nombre: ${data.nombre}, WhatsApp: ${data.whatsapp}, Email: ${data.email}.`);
+                            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+                            window.location.href = whatsappUrl;
 
                         } catch (error) {
                             console.error("Error al guardar en Firestore:", error);
@@ -196,3 +188,4 @@
     </script>
 </body>
 </html>
+
